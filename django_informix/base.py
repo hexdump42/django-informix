@@ -8,10 +8,10 @@ autocommit = True
 
 from django.db.backends import *
 from django.db.backends.signals import connection_created
-from django.db.backends.informix.client import DatabaseClient
-from django.db.backends.informix.creation import DatabaseCreation
-from django.db.backends.informix.introspection import DatabaseIntrospection
-#from django.db.backends.informix.version import get_version
+from django_informix.client import DatabaseClient
+from django_informix.creation import DatabaseCreation
+from django_informix.introspection import DatabaseIntrospection
+#from django_informix.version import get_version
 from django.utils.encoding import smart_str, smart_unicode
 
 import datetime
