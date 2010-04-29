@@ -230,8 +230,9 @@ def typecast_string(s):
 class DatabaseOperations(BaseDatabaseOperations):
     def quote_name(self, name):
         # Informix does not support quoted table or column names
+        # so we do nothing for that, but need to change hypens &
+        # spaces in name.
+        name = name.replace("-","_")
+        name = name.replace(" ","_") 
         return name
-        if name.startswith('"') and name.endswith('"'):
-            return name # Quoting once is enough.
-        return '"%s"' % name
 

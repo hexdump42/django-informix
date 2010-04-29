@@ -46,7 +46,6 @@ class DatabaseIntrospection(BaseDatabaseIntrospection):
         cursor.execute("""
             SELECT i.idxname, 0, 0
             FROM sysindexes i, systables t
-                pg_catalog.pg_index idx, pg_catalog.pg_attribute attr
             WHERE i.tabid = t.tabid
                 AND t.tabname = %s""", [table_name])
         indexes = {}

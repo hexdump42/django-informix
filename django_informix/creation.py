@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db.backends.creation import BaseDatabaseCreation
+from django.core.management import call_command
 
 class DatabaseCreation(BaseDatabaseCreation):
     # This dictionary maps Field objects to their associated Informix column
@@ -26,11 +27,32 @@ class DatabaseCreation(BaseDatabaseCreation):
         'SlugField':         'varchar(%(max_length)s)',
         'SmallIntegerField': 'smallint',
         'TextField':         'lvarchar(1600)',
-        'TimeField':         'time',
+        'TimeField':         'interval hour to second',
     }
 
     def sql_table_creation_suffix(self):
         return ''
+
+    def create_test_db(self, verbosity=0, autoclobber=None):
+        """A fake create. The database must exist, we just drop any existing
+        tables and call syncdb to create tables for default base database"""
+        print "Preparing database..."
+        database = settings.DATABASE_NAME
+        self._drop_all_tables(self.connection.cursor())
+        call_command('syncdb', database=self.connection, verbosity=verbosity, interactive = False)
+        return database
+
+    def destroy_test_database(self, database_name, verbository=0):
+        """We do nothing here"""
+        print "Destroying database..."
+        return database_name
+        
+    def _drop_all_tables(self, cursor):
+        tables = self.connection.introspection.django_table_names(only_existing=True)
+        for table in tables:
+            sql = "DROP TABLE %s" % self.connection.ops.quote_name(table)
+            cursor.execute(sql)
+        cursor.close()
 
     def sql_for_pending_references(self, model, style, pending_references):
         """Returns any ALTER TABLE statements to add constraints after the fact.
