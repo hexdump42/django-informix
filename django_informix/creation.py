@@ -23,11 +23,9 @@ class DatabaseCreation(BaseDatabaseCreation):
         'OneToOneField':     'integer',
         'PositiveIntegerField': 'integer',
         'PositiveSmallIntegerField': 'smallint',
-        #'PositiveIntegerField': 'integer CHECK (%(column)s >= 0)',
-        #'PositiveSmallIntegerField': 'smallint CHECK (%(column)s >= 0)',
         'SlugField':         'varchar(%(max_length)s)',
         'SmallIntegerField': 'smallint',
-        'TextField':         'text',
+        'TextField':         'lvarchar(1600)',
         'TimeField':         'time',
     }
 
